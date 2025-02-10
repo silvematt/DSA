@@ -5,12 +5,19 @@
 As per the Cormen book "Introduction to Algorithms", pseudocode arrays start at 1
 ----------------------------------------------------------------------------------
 
-QuickSort(A, p, r)
+RandomizedQuickSort(A, p, r)
 
 if(p < r)
-    q = Partition(A, p, r)
-    QuickSort(A, p, q-1)
-    QuickSort(A, q+1, r)
+    q = RandomizedPartition(A, p, r)
+    RandomizedQuickSort(A, p, q-1)
+    RandomizedQuickSort(A, q+1, r)
+
+
+
+int RandomizedPartition(A, p, r)
+    i = rand(p, r)
+    swap(A[i], A[r])
+    return Partition(A, p, r)
 
 
 
@@ -21,9 +28,9 @@ int Partition(A, p, r)
     for j = p to r-1
         if(A[j] <= pivot)
             i++
-            Swap(a[i], a[j])
+            Swap(A[i], A[j])
 
-    Swap(a[i+1], a[r])
+    Swap(A[i+1], A[r])
     return i+1
 
 ----------------------

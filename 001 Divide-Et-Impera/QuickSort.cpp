@@ -21,9 +21,9 @@ int Partition(A, p, r)
     for j = p to r-1
         if(A[j] <= pivot)
             i++
-            Swap(a[i], a[j])
+            Swap(A[i], A[j])
 
-    Swap(a[i+1], a[r])
+    Swap(A[i+1], A[r])
     return i+1
 
 ----------------------
