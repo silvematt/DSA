@@ -17,6 +17,14 @@ for j = 2 to A.lenght
 
     A[i+1] = key;
 
+
+----------------------
+    TIME COMPLEXITY
+----------------------
+Best case:      Θ(n)    (array is already sorted)
+Worst case:     Θ(n^2)  (array is sorted in reverse order)
+Average case:   Θ(n^2)  (random order of elements)
+
 */
 
 #include <iostream>
@@ -30,10 +38,10 @@ void InsertionSort(std::vector<int>& a, int n)
         // Select the current element
         int key = a[j];
 
-        // Select the index of the "current hand" to make comparison
+        // Select the index of the "current hand" (the sorted portion) to make comparisons
         int i = j-1;
 
-        // Find (and make) the spot for the 'key' element
+        // Find (and make) the correct spot for the 'key' element
         while(i >= 0 && a[i] > key)
         {
             a[i+1] = a[i];
