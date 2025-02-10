@@ -17,7 +17,6 @@ int main()
     std::vector<int> a = {53, 21, 4, 2, 104, 20, 5, 18};
     
     std::cout << "Original Array: " << std::endl;
-    // Print array
     for(int i = 0; i < a.size(); i++)
         std::cout << a[i] << " ";
     std::cout << std::endl << std::endl;
@@ -26,7 +25,6 @@ int main()
 
     // p.el(ements) and 'a' are the same, so we can use 'a' directly
 
-    // Print queue
     PrintQueue(a, p.HeapSize());
 
     std::cout << "Extracting max..." << std::endl;

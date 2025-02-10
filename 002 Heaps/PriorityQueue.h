@@ -76,9 +76,14 @@ public:
     {
         int max = el[0];
 
+        // Swap the last element with the first
         std::swap(el[0], el[heapSize-1]);
+
+        // Extract the last element
         el.erase(el.begin() + heapSize-1);
         heapSize--;
+
+        // Make sure the max-heap property is respected after  the swap 
         MaxHeapify(0);
 
         return max;
@@ -87,11 +92,14 @@ public:
     // Time Complexity: O(log n)
     void IncreasePriority(int i, int k)
     {
+        // If the new priority is lesser than the new 'k', it's an error
         if(k <= el[i])
             return;
 
+        // Set the new priority
         el[i] = k;
 
+        // "Bubble up" the new priority until the right spot is found
         while(i > 0 && el[i] > el[ParentIndx(i)])
         {
             std::swap(el[i], el[ParentIndx(i)]);
@@ -102,8 +110,11 @@ public:
     // Time Complexity: O(log n)
     void Insert(int k)
     {
+        // Add a new element and set it to be the lowest possible value
         heapSize++;
         el.push_back(std::numeric_limits<int>::min());
+
+        // Then increase its priority by bubbling it up
         IncreasePriority(heapSize-1, k);
     }
 
