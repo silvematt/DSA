@@ -63,7 +63,7 @@ public:
         BuildMaxHeap();
     }
 
-private:
+protected:
     std::vector<int>& el;
     int heapSize;
 
@@ -104,19 +104,19 @@ public:
         }
     }
 
-    int ParentIndx(int i)
+    int ParentIndx(int i)  
     {
-        return (i/2);
+        return (i-1) / 2;
     }
 
     int LeftIndx(int i)
     {
-        return (2*i);
+        return (2*i) + 1;
     }
 
     int RightIndx(int i)
     {
-        return (2*i) + 1;
+        return (2*i) + 2;
     }
 
     int Size()

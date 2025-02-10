@@ -35,7 +35,7 @@ void HeapSort(std::vector<int>& a)
 {
     Heap h = Heap(a);
     
-    // h.elements and 'a' are the same, so we can use a directly
+    // h.el(ements) and 'a' are the same, so we can use 'a' directly
     for(int i = a.size()-1; i >= 0; i--)
     {
         std::swap(a[0], a[i]);
