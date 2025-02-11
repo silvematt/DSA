@@ -31,8 +31,8 @@ return c[m][n]
 c[i][j] =   {   j                                                                           i = 0
             {   min(c[i][j-1]+1, c[i-1][j]+1, c[i-1][j-1] + δ(X[i], Y[j]))                  otherwise
 
-                Where   δ(X[i], Y[j]) = 1, IF X[i] == Y[j]
-                        δ(X[i], Y[j]) = 0, otherwise
+                Where   δ(X[i], Y[j]) = 0, IF X[i] == Y[j]
+                        δ(X[i], Y[j]) = 1, otherwise
 ----------------------
     TIME COMPLEXITY
 ----------------------
