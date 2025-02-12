@@ -34,7 +34,7 @@ c[i][w] =   {   max(c[i-1][w], c[i-1][W-wi] + vi)           wi <= W
 ----------------------
     TIME COMPLEXITY
 ----------------------
-T(n):     Θ(n*w)
+T(n):     Θ(n*W)
 */
 #include <iostream>
 #include <vector>
