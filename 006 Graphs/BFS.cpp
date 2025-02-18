@@ -76,6 +76,7 @@ struct Graph
 
 void MakeArc(Graph& g, Node& u, Node& v)
 {
+    // Oriented graph, also add v.adj.push_back(&u) to make it non-oriented
     u.adj.push_back(&v);
 
     g.e.push_back(Arc(&u, &v));
@@ -83,6 +84,7 @@ void MakeArc(Graph& g, Node& u, Node& v)
 
 void BFS(Graph& g, Node& s)
 {
+    // Initialization
     for(int i = 0; i < g.v.size(); i++)
     {
         g.v[i].color = WHITE;
@@ -90,21 +92,25 @@ void BFS(Graph& g, Node& s)
         g.v[i].d = 0;
     }
 
+    // Initialize source
     s.color = GREY;
     s.d = 0;
     s.parent = nullptr;
 
+    // Initialize queue
     std::queue<Node*> q;
-
     q.push(&s);
 
+    // BFS-logic
     while(!q.empty())
     {
+        // Take the front node
         Node* v = q.front();
         q.pop();
         
         std::cout << v->label << std::endl;
 
+        // Expand
         for(int i = 0; i < v->adj.size(); i++)
         {
             Node* u = v->adj[i];
