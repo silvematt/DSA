@@ -37,3 +37,107 @@ while(Q IS NOT EMPTY)
 T(n):     O(V + E)
 */
 
+#include <iostream>
+#include <vector>
+#include <queue>
+
+enum Color
+{
+    WHITE = 0,
+    GREY,
+    BLACK
+};
+
+struct Node
+{
+    char label;
+    Color color;
+    Node* parent;
+    int d;
+
+    std::vector<Node*> adj;
+
+    Node(char l) : label(l), color(WHITE), parent(nullptr), d(0) {}
+};
+
+struct Arc
+{
+    Node* u;
+    Node* v;
+
+    Arc(Node* a, Node* b) : u(a), v(b) {}
+};
+
+struct Graph
+{
+    std::vector<Node> v;
+    std::vector<Arc> e;
+};
+
+void MakeArc(Graph& g, Node& u, Node& v)
+{
+    u.adj.push_back(&v);
+
+    g.e.push_back(Arc(&u, &v));
+}
+
+void BFS(Graph& g, Node& s)
+{
+    for(int i = 0; i < g.v.size(); i++)
+    {
+        g.v[i].color = WHITE;
+        g.v[i].parent = nullptr;
+        g.v[i].d = 0;
+    }
+
+    s.color = GREY;
+    s.d = 0;
+    s.parent = nullptr;
+
+    std::queue<Node*> q;
+
+    q.push(&s);
+
+    while(!q.empty())
+    {
+        Node* v = q.front();
+        q.pop();
+        
+        std::cout << v->label << std::endl;
+
+        for(int i = 0; i < v->adj.size(); i++)
+        {
+            Node* u = v->adj[i];
+            
+            if(u->color == WHITE)
+            {
+                u->parent = v;
+                u->d = v->d+1;
+                u->color = GREY;
+                q.push(u);
+            }
+        }
+
+        v->color = BLACK;
+    }
+}
+
+int main()
+{
+    Graph g;
+
+    g.v.push_back(Node('1'));       // v[0]
+    g.v.push_back(Node('2'));       // v[1]
+    g.v.push_back(Node('3'));       // v[2]
+    g.v.push_back(Node('4'));       // v[3]
+    g.v.push_back(Node('5'));       // v[4]
+    g.v.push_back(Node('6'));       // v[5]
+
+    MakeArc(g, g.v[0], g.v[1]);     // A-B
+    MakeArc(g, g.v[0], g.v[2]);     // A-C
+    MakeArc(g, g.v[1], g.v[3]);     // B-D
+    MakeArc(g, g.v[3], g.v[4]);     // D-E
+    MakeArc(g, g.v[2], g.v[5]);     // C-E
+
+    BFS(g, g.v[0]);
+}
