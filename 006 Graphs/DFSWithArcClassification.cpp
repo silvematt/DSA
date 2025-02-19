@@ -21,6 +21,8 @@ DFS_VISIT(v)
 v.d = time = time+1
 v.color = GREY
 
+arcsToCheck = empty_queue_of_arcs
+
 for each u in v.adj
 
     Arc a = GetArc(v, u)
@@ -31,14 +33,18 @@ for each u in v.adj
     else if(u.color == GREY)
         a.type = BACKWARDS_ARC
     else
-        if(v.d < u.d && u.f < v.f)
-            a.type = FORWARD_ARC
-        else
-            a.type = TRAVERSAL_ARC
+        ENQUEUE(arcsToCheck, a)
+        
 
 v.color = BLACK
 v.f = time = time +1
     
+while(!arcsToCheck.empty())
+    a = DEQUEUE(arcsToCheck)
+    if(a.u.d < a.v.d && a.v.f < a.u.f)
+        a.type = FORWARD_ARC
+    else
+        a.type = TRAVERSAL_ARC
 
 ----------------------
     TIME COMPLEXITY
@@ -47,6 +53,7 @@ T(n):     O(V + E)
 */
 #include <iostream>
 #include <vector>
+#include <queue>
 
 enum Colors
 {
@@ -112,17 +119,19 @@ Arc* GetArc(Graph* g, Node* u, Node* v)
     return nullptr;
 }
 
-void DFS_Visit(Graph& g, Node& n)
+void DFS_Visit(Graph& g, Node& u)
 {
-    n.color = GREY;
-    n.d = time = time + 1;
+    u.color = GREY;
+    u.d = time = time + 1;
 
-    std::cout << n.label << std::endl;
+    std::cout << u.label << std::endl;
 
-    for(int i = 0; i < n.adj.size(); i++)
+    std::queue<Arc*> arcsToCheck;
+
+    for(int i = 0; i < u.adj.size(); i++)
     {
-        Node& u = *n.adj[i];
-        Arc* a = GetArc(&g, &n, &u);
+        Node& v = *u.adj[i];
+        Arc* a = GetArc(&g, &u, &v);
 
         if(a == nullptr)
         {
@@ -130,27 +139,35 @@ void DFS_Visit(Graph& g, Node& n)
             return;
         }
 
-        if(u.color == WHITE)
+        if(v.color == WHITE)
         {
             a->type = TREE_ARC;
 
-            u.parent = &n;
-            DFS_Visit(g, u);
+            v.parent = &u;
+            DFS_Visit(g, v);
         }
-        else if(u.color == GREY)
+        else if(v.color == GREY)
             a->type = BACKWARD_ARC;
         else
         {
-            // Check if this is a forward or traversal arc
-            if(n.d < u.d && u.f < n.f) // if it's a descendant
-                a->type = FORWARD_ARC;
-            else
-                a->type = TRAVERSAL_ARC;
+            // Check if this is a forward or traversal arc, this needs to be done AFTER n.f is set, so let's save this arc
+            arcsToCheck.push(a);
         }
     }
 
-    n.f = time = time + 1;
-    n.color = BLACK;
+    u.f = time = time + 1;
+    u.color = BLACK;
+
+    while(!arcsToCheck.empty())
+    {
+        Arc* a = arcsToCheck.front();
+        arcsToCheck.pop();
+
+        if(a->u->d < a->v->d && a->v->f < a->u->f) // check if it's descendant
+            a->type = FORWARD_ARC;
+        else
+            a->type = TRAVERSAL_ARC;
+    }
 }
 
 void DFS(Graph& g)
@@ -192,5 +209,35 @@ int main()
     MakeArc(g, g.v[3], g.v[4]);     // D-E
     MakeArc(g, g.v[2], g.v[5]);     // C-F
 
+    // Make a backward arc
+    MakeArc(g, g.v[5], g.v[2]);
+
+    // Make a traversal arc
+    MakeArc(g, g.v[2], g.v[1]);
+
+    // Make a forward arc
+    MakeArc(g, g.v[0], g.v[4]);
+
     DFS(g);
+
+    // Print arc classifications
+    for(int i = 0; i < g.e.size(); i++)
+    {
+        switch(g.e[i].type)
+        {
+            case TREE_ARC:
+                std:: cout << g.e[i].u->label << " -> " << g.e[i].v->label << " is a TREE ARC" << std::endl;
+                break;
+            case BACKWARD_ARC:
+                std:: cout << g.e[i].u->label << " -> " << g.e[i].v->label << " is a BACKWARDS ARC" << std::endl;
+                break;
+            case FORWARD_ARC:
+                std:: cout << g.e[i].u->label << " -> " << g.e[i].v->label << " is a FORWARD ARC" << std::endl;
+                break;
+            case TRAVERSAL_ARC:
+                std:: cout << g.e[i].u->label << " -> " << g.e[i].v->label << " is a TRAVERSAL ARC" << std::endl;
+                break;
+
+        }
+    }
 }
