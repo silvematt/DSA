@@ -81,26 +81,26 @@ void MakeArc(Graph& g, Node& u, Node& v)
     g.e.push_back(Arc(&u, &v));
 }
 
-void DFS_Visit(Node& n)
+void DFS_Visit(Node& u)
 {
-    n.color = GREY;
-    n.d = time = time + 1;
+    u.color = GREY;
+    u.d = time = time + 1;
 
-    std::cout << n.label << std::endl;
+    std::cout << u.label << std::endl;
 
-    for(int i = 0; i < n.adj.size(); i++)
+    for(int i = 0; i < u.adj.size(); i++)
     {
-        Node& u = *n.adj[i];
+        Node& v = *u.adj[i];
 
-        if(u.color == WHITE)
+        if(v.color == WHITE)
         {
-            u.parent = &n;
-            DFS_Visit(u);
+            v.parent = &u;
+            DFS_Visit(v);
         }
     }
 
-    n.f = time = time + 1;
-    n.color = BLACK;
+    u.f = time = time + 1;
+    u.color = BLACK;
 }
 
 void DFS(Graph& g)

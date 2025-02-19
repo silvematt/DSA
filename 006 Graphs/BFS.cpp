@@ -105,26 +105,26 @@ void BFS(Graph& g, Node& s)
     while(!q.empty())
     {
         // Take the front node
-        Node* v = q.front();
+        Node* u = q.front();
         q.pop();
         
-        std::cout << v->label << std::endl;
+        std::cout << u->label << std::endl;
 
         // Expand
-        for(int i = 0; i < v->adj.size(); i++)
+        for(int i = 0; i < u->adj.size(); i++)
         {
-            Node* u = v->adj[i];
+            Node* v = u->adj[i];
             
-            if(u->color == WHITE)
+            if(v->color == WHITE)
             {
-                u->parent = v;
-                u->d = v->d+1;
-                u->color = GREY;
-                q.push(u);
+                v->parent = u;
+                v->d = u->d+1;
+                v->color = GREY;
+                q.push(v);
             }
         }
 
-        v->color = BLACK;
+        u->color = BLACK;
     }
 }
 
