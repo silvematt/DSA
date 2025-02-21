@@ -1,3 +1,96 @@
+/*
+----------------------------------------------------------------------------------
+1. Call DFS(G) to compute finishing times f[u] for each vertex u
+2. Compute Transpose(G)
+3. Call DFS(Transpose(G)), but in the main loop of DFS, consider the vertices in order of decreasing f[u] (as computed in step 1)
+4. Output the vertices of each tree in the depth-first forest of step 3 as a separate strong connected component
+
+----------------------------------------------------------------------------------
+                                    PSEUDOCODE
+
+As per the Cormen book "Introduction to Algorithms", pseudocode arrays start at 1
+
+// TPS is first DFS pass
+TPS_DFS(g, s)
+
+for i = 1 to g.size
+    n = g[i]
+    n.color = WHITE
+    n.d = n.f = 0
+    n.pi = nullptr
+
+for i = 1 to g.size
+    if(g[i].color == WHITE)
+        TPS_DFSVisit(g, g[i], s)
+
+
+TPS_DFSVisit(g, u, s)
+
+u.color = GREY
+u.d = time = time + 1;
+
+for i = 1 to u.adj.size
+    v = u.adj[i]
+    v.parent = u;
+    TPS_DFSVisit(g, v, s)
+
+u.f = time = time + 1;
+u.color = BLACK
+
+s.push(u)
+
+
+// SSC dfs finds the strongly connected components
+SSC_DFSVisit(g, u, comp)
+
+u.color = GREY
+u.d = time = time + 1;
+
+for i = 1 to u.adj.size
+    v = u.adj[i]
+    if(v.color == WHITE)
+        v.parent = u;
+        comp.add(v.label)
+        SSC_DFSVisit(g, v, comp)
+
+u.f = time = time + 1;
+u.color = BLACK
+
+SSC_DFS(t, s)
+
+// t initialize
+for i = 1 to g.size
+    n = g[i]
+    n.color = WHITE
+    n.d = n.f = 0
+    n.pi = nullptr
+
+while(!s.empty())
+    u = s.top();
+
+    component = {u.label}
+
+    for i = 1 to u.adj.size
+        v = u.adj[i]
+        if(v.color == WHITE)
+            SCC_DFSVisit(t, v, component)
+    
+    print(component);
+
+    s.pop()
+    
+
+SSC()
+
+g = graph
+s = empty   // stack will contain the topological sorted sequence (nodes ordered by finish time)
+TPS_DFS(g, s) 
+
+// at this point the stack contains the topological sequence, which is the sequence we need to follow while visiting the transposed graph
+t = g.transpose
+SCC_DFS(t, s)
+*/
+
 #include <iostream>
 #include <vector>
 #include <stack>
