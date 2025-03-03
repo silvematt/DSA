@@ -4,17 +4,20 @@
 
 As per the Cormen book "Introduction to Algorithms", pseudocode arrays start at 1
 
-ActivitySelector(s[1...n], f[1...n])
+ActivitySelector(a)
 
-n = s.size();
+Sort(a); // sort a by finish time, ascending, so that the first finish time is the first element in the array
 
-A = {a1}
+n = a.size();
+
+A = {a[1]}
 k = 1
 
-for m = 2 to n
-    if(s[m] >= f[k])
-        A = A U a{k}
-        k = m
+for j = 2 to n
+    if(a[k].finishTime <= a[j].startTime)
+        k = j
+        A = A U {a[j]}
+
 
 return A
 
